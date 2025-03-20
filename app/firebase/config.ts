@@ -1,4 +1,5 @@
 import { initializeApp, getApps, getApp, FirebaseApp } from "firebase/app";
+import { getAuth } from "firebase/auth";
 import { getFirestore, Firestore } from "firebase/firestore";
 import { getStorage, FirebaseStorage } from "firebase/storage";
 
@@ -16,3 +17,10 @@ const app: FirebaseApp = getApps().length > 0 ? getApp() : initializeApp(firebas
 
 export const db: Firestore = getFirestore(app);
 export const storage: FirebaseStorage = getStorage(app);
+
+const auth = getAuth(app);
+
+export {app, auth}
+
+//Tutorial that's quite solid: currently at 10.16 - https://www.youtube.com/watch?v=lQftwBTCejE
+
