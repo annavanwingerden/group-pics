@@ -14,9 +14,9 @@ export const dynamic = 'force-dynamic';
 
 export async function GET(
     request: NextRequest,
-    context: any
+    { params }: { params: { key: string } }
 ): Promise<NextResponse> {
-    const key = context.params?.key;
+    const key = params.key;
   
     if (!key) {
       return NextResponse.json({ error: 'Missing key' }, { status: 400 });
