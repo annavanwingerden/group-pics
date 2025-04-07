@@ -14,34 +14,42 @@ export const dynamic = 'force-dynamic';
 
 export async function GET(
     request: NextRequest,
-    { params }: { params: Record<string, string> }
+    context: { params?: Record<string, string> }
   ): Promise<NextResponse> {
-    const { key } = params;
-
-  try {
-    const command = new GetObjectCommand({
-      Bucket: 'group-pics',
-      Key: decodeURIComponent(key),
-    });
-
-    const response = await S3.send(command);
-
-    if (!response.Body) {
-      throw new Error('No image data received');
+    const key = context.params?.key;
+  
+    if (!key) {
+      return NextResponse.json({ error: 'Missing key' }, { status: 400 });
     }
-
-    const arrayBuffer = await response.Body.transformToByteArray();
-
-    const headers = new Headers();
-    headers.set('Content-Type', response.ContentType || 'image/jpeg');
-    headers.set('Cache-Control', 'public, max-age=31536000');
-
-    return new NextResponse(arrayBuffer, {
-      headers,
-      status: 200,
-    });
-  } catch (error) {
-    console.error('Error fetching image:', error);
-    return NextResponse.json({ error: 'Failed to fetch image' }, { status: 500 });
+  
+    try {
+      const command = new GetObjectCommand({
+        Bucket: 'group-pics',
+        Key: decodeURIComponent(key),
+      });
+  
+      const response = await S3.send(command);
+  
+      if (!response.Body) {
+        throw new Error('No image data received');
+      }
+  
+      const arrayBuffer = await response.Body.transformToByteArray();
+  
+      const headers = new Headers();
+      headers.set('Content-Type', response.ContentType || 'image/jpeg');
+      headers.set('Cache-Control', 'public, max-age=31536000');
+  
+      return new NextResponse(arrayBuffer, {
+        headers,
+        status: 200,
+      });
+    } catch (error) {
+      console.error('Error fetching image:', error);
+      return NextResponse.json(
+        { error: 'Failed to fetch image' },
+        { status: 500 }
+      );
+    }
   }
-}
+  
