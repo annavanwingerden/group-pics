@@ -21,6 +21,3 @@ export const storage: FirebaseStorage = getStorage(app);
 const auth = getAuth(app);
 
 export {app, auth}
-
-//Tutorial that's quite solid: currently at 10.16 - https://www.youtube.com/watch?v=lQftwBTCejE
-
