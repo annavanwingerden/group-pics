@@ -14,9 +14,9 @@ export const dynamic = 'force-dynamic';
 
 export async function GET(
     request: NextRequest,
-    { params }: { params: { key: string } }
+    context: { params: { key: string } }
 ): Promise<NextResponse> {
-    const { key } = params;
+    const { key } = context.params;
     
     try {
         const command = new GetObjectCommand({
