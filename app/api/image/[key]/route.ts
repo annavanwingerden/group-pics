@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { S3Client, GetObjectCommand } from '@aws-sdk/client-s3';
 
 const S3 = new S3Client({
@@ -13,10 +13,10 @@ const S3 = new S3Client({
 export const dynamic = 'force-dynamic';
 
 export async function GET(
-    request: Request,
-    context: { params: { key: string } }
+    request: NextRequest,
+    { params }: { params: { key: string } }
 ): Promise<NextResponse> {
-    const { key } = context.params;
+    const { key } = params;
     
     try {
         const command = new GetObjectCommand({
