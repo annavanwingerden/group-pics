@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { S3Client, GetObjectCommand } from '@aws-sdk/client-s3';ute-modules/app-route/module';
+import { S3Client, GetObjectCommand } from '@aws-sdk/client-s3';
 
 const S3 = new S3Client({
   region: 'auto',
