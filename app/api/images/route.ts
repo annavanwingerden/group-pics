@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { S3Client, ListObjectsV2Command, GetObjectCommand } from '@aws-sdk/client-s3';
+import { S3Client, ListObjectsV2Command } from '@aws-sdk/client-s3';
 
 const S3 = new S3Client({
   region: 'auto',
