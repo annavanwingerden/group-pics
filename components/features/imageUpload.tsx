@@ -3,47 +3,54 @@
 import { useState, useRef } from 'react';
 
 interface ImageUploadProps {
-  onUploadComplete?: (url: string) => void;
+  onUploadComplete?: (urls: string[]) => void;
   className?: string;
 }
 
 export function ImageUpload({ onUploadComplete, className = '' }: ImageUploadProps) {
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [progress, setProgress] = useState<number>(0);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (!file) return;
+    const files = Array.from(event.target.files || []);
+    if (files.length === 0) return;
 
-    // Reset states
     setError(null);
     setUploading(true);
+    setProgress(0);
 
     try {
-      const formData = new FormData();
-      formData.append('file', file);
+      const uploadedUrls: string[] = [];
+      
+      for (let i = 0; i < files.length; i++) {
+        const formData = new FormData();
+        formData.append('file', files[i]);
 
-      const response = await fetch('/api/upload', {
-        method: 'POST',
-        body: formData,
-      });
+        const response = await fetch('/api/upload', {
+          method: 'POST',
+          body: formData,
+        });
 
-      const data = await response.json();
+        const data = await response.json();
 
-      if (!response.ok) {
-        throw new Error(data.error || 'Upload failed');
+        if (!response.ok) {
+          throw new Error(data.error || 'Upload failed');
+        }
+
+        uploadedUrls.push(data.url);
+        setProgress(((i + 1) / files.length) * 100);
       }
 
       if (onUploadComplete) {
-        onUploadComplete(data.url);
+        onUploadComplete(uploadedUrls);
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to upload image');
+      setError(err instanceof Error ? err.message : 'Failed to upload images');
       console.error('Upload error:', err);
     } finally {
       setUploading(false);
-      // Reset the file input
       if (fileInputRef.current) {
         fileInputRef.current.value = '';
       }
@@ -56,6 +63,7 @@ export function ImageUpload({ onUploadComplete, className = '' }: ImageUploadPro
         ref={fileInputRef}
         type="file"
         accept="image/*"
+        multiple
         onChange={handleUpload}
         disabled={uploading}
         className="block w-full text-sm text-slate-500
@@ -66,7 +74,19 @@ export function ImageUpload({ onUploadComplete, className = '' }: ImageUploadPro
           hover:file:bg-violet-100
           disabled:opacity-50 disabled:cursor-not-allowed"
       />
-      {uploading && <p className="text-sm text-gray-500">Uploading...</p>}
+      {uploading && (
+        <div className="space-y-2">
+          <p className="text-sm text-gray-500">
+            Uploading... {Math.round(progress)}%
+          </p>
+          <div className="w-full bg-gray-200 rounded-full h-2.5">
+            <div 
+              className="bg-violet-600 h-2.5 rounded-full transition-all duration-300" 
+              style={{ width: `${progress}%` }}
+            ></div>
+          </div>
+        </div>
+      )}
       {error && <p className="text-sm text-red-500">{error}</p>}
     </div>
   );
