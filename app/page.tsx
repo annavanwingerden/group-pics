@@ -1,5 +1,6 @@
 'use client'
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -9,7 +10,7 @@ export default function Home() {
         <div className="flex items-center justify-between">
           <div className="flex items-center">
             <Image
-              src="/next.svg"
+              src="/grouppics.svg"
               alt="Logo"
               width={100}
               height={26}
@@ -17,12 +18,10 @@ export default function Home() {
             />
           </div>
           <div className="hidden md:flex items-center space-x-8">
-            <a href="#features" className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors">Features</a>
-            <a href="#pricing" className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors">Pricing</a>
-            <a href="#contact" className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors">Contact</a>
-            <button className="bg-blue-600 text-white px-4 sm:px-6 py-2 rounded-full hover:bg-blue-700 transition-all transform hover:scale-105 text-sm sm:text-base">
+            <Link href="/sign-in" className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors">Login</Link>
+            <Link href="/sign-up" className="bg-blue-600 text-white px-4 sm:px-6 py-2 rounded-full hover:bg-blue-700 transition-all transform hover:scale-105 text-sm sm:text-base">
               Get Started
-            </button>
+            </Link>
           </div>
           <button className="md:hidden text-gray-600 dark:text-gray-300">
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -43,9 +42,9 @@ export default function Home() {
               Finally, a dead-simple way to share and relive your group trip memories — without losing quality, juggling platforms, or leaving anyone out.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
-              <button className="bg-blue-600 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full hover:bg-blue-700 transition-all transform hover:scale-105 text-base sm:text-lg font-semibold shadow-lg hover:shadow-xl">
+              <Link href="/sign-up" className="bg-blue-600 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full hover:bg-blue-700 transition-all transform hover:scale-105 text-base sm:text-lg font-semibold shadow-lg hover:shadow-xl">
                 🎉 Start Sharing for Free
-              </button>
+              </Link>
             </div>
           </div>
           <div className="md:w-1/2 mt-8 sm:mt-10 md:mt-0">
@@ -109,18 +108,12 @@ export default function Home() {
               <div className="text-2xl mb-3 sm:mb-4">🛡️</div>
               <p className="text-base sm:text-lg font-medium">Private & secure access for just your group</p>
             </div>
-            <div className="bg-white dark:bg-gray-700 p-4 sm:p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1">
-              <div className="text-2xl mb-3 sm:mb-4">📅</div>
-              <p className="text-base sm:text-lg font-medium">Organized by day, activity, or vibe</p>
-            </div>
-            <div className="bg-white dark:bg-gray-700 p-4 sm:p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1">
-              <div className="text-2xl mb-3 sm:mb-4">🚀</div>
-              <p className="text-base sm:text-lg font-medium">No login needed for friends — just upload and view</p>
-            </div>
           </div>
-          <button className="mt-8 sm:mt-12 bg-blue-600 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full hover:bg-blue-700 transition-all transform hover:scale-105 text-base sm:text-lg font-semibold shadow-lg hover:shadow-xl">
+          <div className="mt-8 sm:mt-12">
+          <Link href="/sign-up" className="mt-8 sm:mt-12 bg-blue-600 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full hover:bg-blue-700 transition-all transform hover:scale-105 text-base sm:text-lg font-semibold shadow-lg hover:shadow-xl">
             ✨ Create Your First Album Now
-          </button>
+          </Link>
+          </div>
         </div>
       </section>
 
@@ -141,11 +134,11 @@ export default function Home() {
             </div>
             <div className="bg-white dark:bg-gray-700 p-4 sm:p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1">
               <div className="text-2xl mb-3 sm:mb-4">3️⃣</div>
-              <p className="text-base sm:text-lg font-medium">Everyone uploads their media</p>
+              <p className="text-base sm:text-lg font-medium">Everyone uploads their photos</p>
             </div>
             <div className="bg-white dark:bg-gray-700 p-4 sm:p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1">
               <div className="text-2xl mb-3 sm:mb-4">4️⃣</div>
-              <p className="text-base sm:text-lg font-medium">Download, relive, or create a recap reel</p>
+              <p className="text-base sm:text-lg font-medium">Everyone can download all photos</p>
             </div>
           </div>
           <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-300 mt-8 sm:mt-12 font-medium">
@@ -186,9 +179,9 @@ export default function Home() {
           <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-300 mb-6 sm:mb-8 max-w-2xl mx-auto">
             Start your first album in seconds — it&apos;s free, and your group will thank you.
           </p>
-          <button className="bg-blue-600 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full hover:bg-blue-700 transition-all transform hover:scale-105 text-base sm:text-lg font-semibold shadow-lg hover:shadow-xl">
+          <Link href="/sign-up" className="bg-blue-600 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full hover:bg-blue-700 transition-all transform hover:scale-105 text-base sm:text-lg font-semibold shadow-lg hover:shadow-xl">
             📸 Start Sharing for Free
-          </button>
+          </Link>
         </div>
       </section>
 
@@ -198,7 +191,7 @@ export default function Home() {
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="mb-6 md:mb-0">
               <Image
-                src="/next.svg"
+                src="/grouppics.svg"
                 alt="Logo"
                 width={80}
                 height={20}
@@ -212,7 +205,7 @@ export default function Home() {
             </div>
           </div>
           <div className="mt-6 sm:mt-8 text-center text-gray-600 dark:text-gray-300 text-sm sm:text-base">
-            Made with love (and a little chaos) for trip groups everywhere.
+          Made with love for trip groups everywhere.❤️
           </div>
         </div>
       </footer>
