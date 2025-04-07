@@ -12,7 +12,7 @@ const S3 = new S3Client({
 
 export const dynamic = 'force-dynamic';
 
-export async function GET(
+export async function POST(
     request: NextRequest,
     { params }: { params: { key: string } }
 ): Promise<NextResponse> {
