@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { S3Client, GetObjectCommand } from '@aws-sdk/client-s3';
+import type { RouteHandlerContext } from 'next/dist/server/future/route-modules/app-route/module';
 
 const S3 = new S3Client({
   region: 'auto',
@@ -13,10 +14,10 @@ const S3 = new S3Client({
 export const dynamic = 'force-dynamic';
 
 export async function GET(
-  request: NextRequest,
-  { params }: { params: { key: string } }
-): Promise<NextResponse> {
-  const { key } = params;
+    request: NextRequest,
+    { params }: RouteHandlerContext
+  ): Promise<NextResponse> {
+    const { key } = params;  
 
   try {
     const command = new GetObjectCommand({
