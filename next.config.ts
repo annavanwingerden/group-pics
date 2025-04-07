@@ -5,7 +5,7 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: '**', // Be more specific in production
+        hostname: '**',
       },
     ],
     unoptimized: true, // Add this for external images

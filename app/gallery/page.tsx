@@ -8,6 +8,7 @@ import { LogOut } from "lucide-react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../firebase/config";
 import { signOut } from "firebase/auth";
+import Image from 'next/image';
 
 interface ImageItem {
     url: string;
@@ -115,10 +116,11 @@ export default function Gallery() {
                             <Card key={photo.key} className="overflow-hidden">
                                 <CardContent className="p-0 relative h-40">
                                     <div className="w-full h-full relative">
-                                        <img
+                                        <Image
                                             src={photo.url}
                                             alt={`Photo ${index + 1}`}
-                                            className="w-full h-full object-cover"
+                                            fill
+                                            className="object-cover"
                                             onError={(e) => {
                                                 console.error('Error loading image:', photo.url);
                                                 e.currentTarget.src = '/placeholder-image.jpg';
