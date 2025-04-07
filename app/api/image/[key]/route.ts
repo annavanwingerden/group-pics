@@ -14,8 +14,8 @@ export const dynamic = 'force-dynamic';
 
 export async function GET(
     request: NextRequest,
-    context: { params?: Record<string, string> }
-  ): Promise<NextResponse> {
+    context: any
+): Promise<NextResponse> {
     const key = context.params?.key;
   
     if (!key) {
