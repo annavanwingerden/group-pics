@@ -1,5 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { S3Client, GetObjectCommand } from '@aws-sdk/client-s3';
+import { cookies } from 'next/headers';
+import { getFirebaseAdmin } from '@/app/firebase/admin';
+
+export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 const S3 = new S3Client({
     region: 'auto',
@@ -10,8 +16,6 @@ const S3 = new S3Client({
     },
 });
 
-export const dynamic = 'force-dynamic';
-
 export async function GET(
     request: NextRequest,
     context: { params: { key: string } }
@@ -19,6 +23,27 @@ export async function GET(
     const { key } = context.params;
     
     try {
+        // Get the session cookie
+        const sessionCookie = (await cookies()).get('session')?.value;
+        
+        if (!sessionCookie) {
+            return NextResponse.json(
+                { error: 'Unauthorized' },
+                { status: 401 }
+            );
+        }
+
+        // Verify the session cookie
+        try {
+            await getFirebaseAdmin().verifySessionCookie(sessionCookie);
+        } catch (error) {
+            console.error('Session verification failed:', error);
+            return NextResponse.json(
+                { error: 'Unauthorized' },
+                { status: 401 }
+            );
+        }
+
         const command = new GetObjectCommand({
             Bucket: 'group-pics',
             Key: decodeURIComponent(key),

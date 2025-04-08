@@ -12,7 +12,7 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID
 };
 
-// Initialize Firebase only if it hasn’t been initialized already
+// Initialize Firebase only if it hasn't been initialized already
 const app: FirebaseApp = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
 
 export const db: Firestore = getFirestore(app);

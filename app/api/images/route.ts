@@ -1,5 +1,10 @@
 import { NextResponse } from 'next/server';
 import { S3Client, ListObjectsV2Command } from '@aws-sdk/client-s3';
+import { cookies } from 'next/headers';
+
+export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 const S3 = new S3Client({
   region: 'auto',
@@ -10,10 +15,18 @@ const S3 = new S3Client({
   },
 });
 
-export const dynamic = 'force-dynamic';
-
 export async function GET() {
   try {
+    // Simple session check
+    const sessionCookie = (await cookies()).get('session')?.value;
+    
+    if (!sessionCookie) {
+      return NextResponse.json(
+        { error: 'Unauthorized' },
+        { status: 401 }
+      );
+    }
+
     const command = new ListObjectsV2Command({
       Bucket: 'group-pics',
     });
@@ -22,11 +35,10 @@ export async function GET() {
     
     const images = response.Contents?.map(object => ({
       key: object.Key,
-      url: `/api/image/${object.Key}`, // Use a proxy endpoint
+      url: `/api/image/${object.Key}`,
       lastModified: object.LastModified,
     })) || [];
 
-    console.log('Returning images:', JSON.stringify(images, null, 2));
     return NextResponse.json({ images });
   } catch (error) {
     console.error('Error listing images:', error);

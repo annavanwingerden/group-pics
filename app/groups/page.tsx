@@ -6,7 +6,7 @@ import { getUserGroups, createGroup, joinGroup } from '@/app/firebase/groupUtils
 import { Group } from '@/app/firebase/types';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 export default function GroupsPage() {
   const { user } = useAuth();
@@ -15,6 +15,7 @@ export default function GroupsPage() {
   const [invitationCode, setInvitationCode] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const router = useRouter();
 
   const loadGroups = useCallback(async () => {
     if (!user) return;
@@ -67,58 +68,57 @@ export default function GroupsPage() {
   }
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-6">My Groups</h1>
+    <div className="container mx-auto px-4 py-8">
+      <h1 className="text-2xl font-bold mb-8">Your Groups</h1>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="p-4 border rounded-lg">
+      {error && <p className="text-red-500 mb-4">{error}</p>}
+      
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+        {groups.map((group) => (
+          <div
+            key={group.id}
+            className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow cursor-pointer"
+            onClick={() => router.push(`/groups/${group.id}`)}
+          >
+            <h3 className="text-xl font-semibold mb-2">{group.name}</h3>
+            <p className="text-gray-600 dark:text-gray-300 text-sm">
+              Created {new Date(group.createdAt).toLocaleDateString()}
+            </p>
+          </div>
+        ))}
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
           <h2 className="text-xl font-semibold mb-4">Create New Group</h2>
           <form onSubmit={handleCreateGroup} className="space-y-4">
             <Input
               type="text"
-              placeholder="Group Name"
               value={newGroupName}
               onChange={(e) => setNewGroupName(e.target.value)}
+              placeholder="Group Name"
               required
             />
-            <Button type="submit">Create Group</Button>
+            <Button type="submit" className="w-full">
+              Create Group
+            </Button>
           </form>
         </div>
 
-        <div className="p-4 border rounded-lg">
-          <h2 className="text-xl font-semibold mb-4">Join Group</h2>
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+          <h2 className="text-xl font-semibold mb-4">Join Existing Group</h2>
           <form onSubmit={handleJoinGroup} className="space-y-4">
             <Input
               type="text"
-              placeholder="Invitation Code"
               value={invitationCode}
               onChange={(e) => setInvitationCode(e.target.value)}
+              placeholder="Invitation Code"
               required
             />
-            <Button type="submit">Join Group</Button>
+            <Button type="submit" className="w-full">
+              Join Group
+            </Button>
           </form>
-        </div>
-      </div>
-
-      {error && (
-        <div className="text-red-500 mt-4">{error}</div>
-      )}
-
-      <div className="mt-8">
-        <h2 className="text-xl font-semibold mb-4">Your Groups</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {groups.map((group) => (
-            <Link
-              key={group.id}
-              href={`/groups/${group.id}`}
-              className="p-4 border rounded-lg hover:bg-gray-50 transition-colors"
-            >
-              <h3 className="font-semibold">{group.name}</h3>
-              <p className="text-sm text-gray-500">
-                Invitation Code: {group.invitationCode}
-              </p>
-            </Link>
-          ))}
         </div>
       </div>
     </div>
