@@ -1,13 +1,16 @@
 'use client';
 
 import { useState, useRef } from 'react';
+import { uploadGroupPhoto } from '@/app/firebase/groupUtils';
 
 interface ImageUploadProps {
+  groupId: string;
+  userId: string;
   onUploadComplete?: (urls: string[]) => void;
   className?: string;
 }
 
-export function ImageUpload({ onUploadComplete, className = '' }: ImageUploadProps) {
+export function ImageUpload({ groupId, userId, onUploadComplete, className = '' }: ImageUploadProps) {
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [progress, setProgress] = useState<number>(0);
@@ -23,23 +26,13 @@ export function ImageUpload({ onUploadComplete, className = '' }: ImageUploadPro
 
     try {
       const uploadedUrls: string[] = [];
-      
+
       for (let i = 0; i < files.length; i++) {
-        const formData = new FormData();
-        formData.append('file', files[i]);
+        const file = files[i];
 
-        const response = await fetch('/api/upload', {
-          method: 'POST',
-          body: formData,
-        });
+        const uploadedPhoto = await uploadGroupPhoto(groupId, userId, file);
 
-        const data = await response.json();
-
-        if (!response.ok) {
-          throw new Error(data.error || 'Upload failed');
-        }
-
-        uploadedUrls.push(data.url);
+        uploadedUrls.push(uploadedPhoto.storageUrl);
         setProgress(((i + 1) / files.length) * 100);
       }
 

@@ -60,6 +60,8 @@ export default function Dashboard() {
                             <ImageUpload 
                                 onUploadComplete={handleUploadComplete}
                                 className="mb-4"
+                                userId={user.uid}
+                                groupId=""
                             />
                             <Button 
                                 variant="outline" 
